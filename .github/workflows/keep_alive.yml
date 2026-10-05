@@ -1,0 +1,48 @@
+# .github/workflows/keep_alive.yml
+# Keeps my Streamlit assignments app awake by visiting it every 6 hours.
+
+name: Keep Streamlit App Alive
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"     # every 6 hours (UTC); Streamlit sleeps after ~12h without visits
+  workflow_dispatch:          # adds a "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read              # the workflow only needs to read the repo
+
+jobs:
+  wake-app:
+    runs-on: ubuntu-24.04     # pinned version, so the upcoming Ubuntu 26 switch can't break it
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false        # if one URL fails, still check the others
+      matrix:
+        app-url:
+          - "https://saavan-assignments.streamlit.app/"   # ← change to YOUR app URL
+          # Add more apps here later, one per line
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright and Chromium
+        run: |
+          pip install playwright
+          python -m playwright install chromium --with-deps
+
+      - name: Visit and wake the app
+        run: python .github/scripts/wake_app.py "${{ matrix.app-url }}"
+
+      - name: Upload screenshot (for debugging)
+        if: always()          # upload even if the previous step failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-${{ strategy.job-index }}
+          path: screenshot.png
+          retention-days: 3   # auto-delete old screenshots
