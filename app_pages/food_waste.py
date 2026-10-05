@@ -14,6 +14,14 @@
  once for the whole app.
 ============================================================
 """
+# ---- Assignment info (read automatically by registry.py) ----
+TITLE = "Smart Food-Waste Management System"
+NAV_TITLE = "Food-Waste Manager"
+ICON = "🥗"
+URL_PATH = "food-waste"
+DESCRIPTION = "Python Fundamentals: inventory tracking, expiry monitoring, input validation and exception handling."
+SOURCE = "food_waste_manager.py"
+ORDER = 1
 
 from datetime import datetime
 from zoneinfo import ZoneInfo           # built-in module for time zones
