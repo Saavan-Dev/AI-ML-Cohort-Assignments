@@ -11,6 +11,7 @@ Assignments from my AI/ML cohort, built with Python and hosted on Streamlit.
 | # | Assignment | Live Demo | Source Code |
 |---|---|---|---|
 | 1 | 🥗 Smart Food-Waste Management System | [Open App](https://saavan-assignments.streamlit.app/food-waste) | [food_waste_manager.py](food_waste_manager.py) |
+| 2 | ✈️ AI Travel Planner Application | [Open App](https://saavan-assignments.streamlit.app/travel-planner) | [travel_planner.py](app_pages/travel_planner.py) |
 
 > ℹ️ If the app shows a sleeping screen, click **"Yes, get this app back up!"** and wait ~30 seconds.
 
