@@ -1,1 +1,6 @@
 streamlit>=1.50
+requests
+sqlalchemy>=2.0
+pymysql
+pandas
+scikit-learn
