@@ -13,7 +13,7 @@ Flow:
 ============================================================
 """
 
-# ---- Page info (read by registry.py to build the menu & README) ----
+# ---- Page info (read by registry.py to build the menu & README) ----302
 TITLE = "Job Search & Recommendation App"
 NAV_TITLE = "Job Search"
 URL_PATH = "job-search"
@@ -299,9 +299,11 @@ def persist_search(user_id, keyword, location, jobs):
         search_id = result.lastrowid
 
         for rank, job in enumerate(jobs, start=1):
-            params = {k: job.get(k) for k in JOB_COLUMNS}
-            if pd.isna(params["published_at"]):
-                params["published_at"] = None
+            # DataFrame round-trips turn None into NaN/NaT, which MySQL rejects
+            params = {k: (None if pd.isna(job.get(k)) else job.get(k))
+                      for k in JOB_COLUMNS}
+            if isinstance(params["published_at"], pd.Timestamp):
+                params["published_at"] = params["published_at"].to_pydatetime()
             job_id = conn.execute(UPSERT_JOB, params).lastrowid
             conn.execute(
                 text("""
